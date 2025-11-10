@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import Link from 'next/link';
 import { allProjects } from '@/lib/projects-data';
 import { Container } from '@/components/ui/Container';
@@ -9,6 +9,7 @@ import { ComparisonSlider } from '@/components/compare/ComparisonSlider';
 export default function HomePage() {
   const [isLoaded, setIsLoaded] = useState(false);
   const [counters, setCounters] = useState({ projects: 0, years: 0, countries: 0 });
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   
   useEffect(() => {
     setIsLoaded(true);
@@ -21,7 +22,7 @@ export default function HomePage() {
     const targets = {
       projects: allProjects.length,
       years: new Date().getFullYear() - 1995,
-      countries: 15 // MENA + Europe regions
+      countries: 15
     };
     
     let step = 0;
@@ -41,7 +42,17 @@ export default function HomePage() {
       }
     }, interval);
     
-    return () => clearInterval(timer);
+    // Mouse move effect
+    const handleMouseMove = (e: MouseEvent) => {
+      setMousePosition({ x: e.clientX, y: e.clientY });
+    };
+    
+    window.addEventListener('mousemove', handleMouseMove);
+    
+    return () => {
+      clearInterval(timer);
+      window.removeEventListener('mousemove', handleMouseMove);
+    };
   }, []);
 
   const featuredProjects = allProjects
@@ -49,75 +60,63 @@ export default function HomePage() {
     .slice(0, 6);
 
   return (
-    <div className="bg-black">
+    <div className="bg-black relative overflow-hidden">
+      {/* Animated gradient background */}
+      <div 
+        className="fixed inset-0 opacity-30 pointer-events-none"
+        style={{
+          background: `radial-gradient(600px circle at ${mousePosition.x}px ${mousePosition.y}px, rgba(255,255,255,0.06), transparent 40%)`
+        }}
+      />
+
       {/* Hero - Architectural Statement */}
       <section className="relative h-screen w-full overflow-hidden">
-        {/* Hero Image with subtle zoom */}
+        {/* Hero Image with zoom animation */}
         <div className="absolute inset-0">
-          <img 
-            src="/images/cover.jpg"
-            alt="MKDP Studio Architecture"
-            className="w-full h-full object-cover scale-105"
-            style={{
-              transform: isLoaded ? 'scale(1)' : 'scale(1.1)',
-              transition: 'transform 2s cubic-bezier(0.16, 1, 0.3, 1)'
-            }}
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
+          <div className="image-zoom w-full h-full">
+            <img 
+              src="/images/cover.jpg"
+              alt="MKDP Studio Architecture"
+              className="w-full h-full object-cover"
+            />
+          </div>
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+          
+          {/* Floating particles */}
+          <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-white/20 rounded-full float" style={{ animationDelay: '0s' }} />
+          <div className="absolute top-1/3 right-1/3 w-1 h-1 bg-white/30 rounded-full float" style={{ animationDelay: '2s' }} />
+          <div className="absolute bottom-1/3 left-1/2 w-1.5 h-1.5 bg-white/20 rounded-full float" style={{ animationDelay: '4s' }} />
         </div>
 
-        {/* Architectural text composition */}
+        {/* Hero content with stagger animation */}
         <div className="relative h-full flex items-end pb-32">
           <Container>
-            <div className="max-w-6xl">
+            <div className="max-w-6xl stagger-children">
               {/* Studio label */}
-              <div 
-                className="mb-6 overflow-hidden"
-                style={{
-                  opacity: isLoaded ? 1 : 0,
-                  transform: isLoaded ? 'translateY(0)' : 'translateY(20px)',
-                  transition: 'opacity 1s cubic-bezier(0.16, 1, 0.3, 1) 0.3s, transform 1s cubic-bezier(0.16, 1, 0.3, 1) 0.3s'
-                }}
-              >
+              <div className="mb-6">
                 <div className="inline-flex items-center gap-3">
-                  <div className="h-px w-8 bg-white/60"></div>
+                  <div className="h-px w-12 bg-white/60 shimmer"></div>
                   <span className="text-[9px] tracking-[0.35em] text-white/70 uppercase font-light">
                     Architecture × Interior × Urbanism
                   </span>
                 </div>
               </div>
 
-              {/* Main statement - MVRDV-style bold typography */}
+              {/* Main statement with gradient text */}
               <h1 className="mb-8">
-                <div 
-                  className="overflow-hidden"
-                  style={{
-                    opacity: isLoaded ? 1 : 0,
-                    transform: isLoaded ? 'translateY(0)' : 'translateY(40px)',
-                    transition: 'opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.5s, transform 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.5s'
-                  }}
-                >
-                  <span className="block text-6xl md:text-8xl lg:text-[10rem] text-white font-extralight tracking-[-0.02em] leading-[0.85] mb-4">
-                    Designing
-                  </span>
-                  <span className="block text-6xl md:text-8xl lg:text-[10rem] text-white font-extralight tracking-[-0.02em] leading-[0.85]">
-                    Tomorrow's
-                  </span>
-                  <span className="block text-6xl md:text-8xl lg:text-[10rem] text-white font-bold tracking-[-0.02em] leading-[0.85]">
-                    Environments
-                  </span>
-                </div>
+                <span className="block text-6xl md:text-8xl lg:text-[10rem] text-white font-extralight tracking-[-0.02em] leading-[0.85] mb-4">
+                  Designing
+                </span>
+                <span className="block text-6xl md:text-8xl lg:text-[10rem] text-white font-extralight tracking-[-0.02em] leading-[0.85]">
+                  Tomorrow's
+                </span>
+                <span className="block text-6xl md:text-8xl lg:text-[10rem] font-bold tracking-[-0.02em] leading-[0.85] gradient-text neon-glow">
+                  Environments
+                </span>
               </h1>
 
-              {/* Conceptual statement */}
-              <div 
-                className="max-w-2xl"
-                style={{
-                  opacity: isLoaded ? 1 : 0,
-                  transform: isLoaded ? 'translateY(0)' : 'translateY(20px)',
-                  transition: 'opacity 1s cubic-bezier(0.16, 1, 0.3, 1) 0.8s, transform 1s cubic-bezier(0.16, 1, 0.3, 1) 0.8s'
-                }}
-              >
+              {/* Description */}
+              <div className="max-w-2xl">
                 <p className="text-white/80 text-base md:text-lg font-light leading-relaxed tracking-wide mb-8">
                   Design for a changing world. We make architecture, interiors, and urbanism that is innovative, social, sustainable, realistic, and remarkable.
                 </p>
@@ -130,17 +129,11 @@ export default function HomePage() {
                 </div>
               </div>
 
-              {/* CTA */}
-              <div
-                style={{
-                  opacity: isLoaded ? 1 : 0,
-                  transform: isLoaded ? 'translateY(0)' : 'translateY(20px)',
-                  transition: 'opacity 1s cubic-bezier(0.16, 1, 0.3, 1) 1s, transform 1s cubic-bezier(0.16, 1, 0.3, 1) 1s'
-                }}
-              >
+              {/* CTA with hover lift */}
+              <div className="mt-12">
                 <Link 
                   href="/projects"
-                  className="group inline-flex items-center gap-4 mt-12 px-8 py-4 bg-white text-black hover:bg-white/90 transition-all duration-500"
+                  className="group inline-flex items-center gap-4 px-8 py-4 bg-white text-black hover:bg-white/90 transition-all duration-500 hover-lift"
                 >
                   <span className="text-[10px] tracking-[0.25em] uppercase font-medium">Explore Projects</span>
                   <svg className="w-4 h-4 transform group-hover:translate-x-2 transition-transform duration-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -152,8 +145,8 @@ export default function HomePage() {
           </Container>
         </div>
 
-        {/* Scroll indicator */}
-        <div className="absolute bottom-12 left-1/2 -translate-x-1/2">
+        {/* Scroll indicator with pulse */}
+        <div className="absolute bottom-12 left-1/2 -translate-x-1/2 pulse-glow">
           <div className="flex flex-col items-center gap-3 text-white/50">
             <span className="text-[8px] tracking-[0.35em] uppercase font-light">Scroll</span>
             <div className="w-px h-16 bg-white/30 animate-pulse"></div>
@@ -161,36 +154,37 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Stats Section - Animated Counters */}
-      <section className="bg-black py-24 border-t border-white/5">
+      {/* Stats Section - Animated Counters with glass morphism */}
+      <section className="relative bg-black py-24 border-t border-white/5">
+        <div className="absolute inset-0 glass opacity-50"></div>
         <Container>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-12 text-center">
-            <div className="group">
-              <div className="text-6xl md:text-7xl text-white font-extralight mb-4 group-hover:scale-110 transition-transform duration-700">
+          <div className="relative grid grid-cols-2 md:grid-cols-4 gap-12 text-center stagger-children">
+            <div className="group cursor-default perspective-card">
+              <div className="text-6xl md:text-7xl text-white font-extralight mb-4 group-hover:scale-110 transition-transform duration-700 gradient-text">
                 {counters.projects}+
               </div>
               <div className="text-[10px] tracking-[0.3em] uppercase text-white/40 font-light">
                 Projects Delivered
               </div>
             </div>
-            <div className="group">
-              <div className="text-6xl md:text-7xl text-white font-extralight mb-4 group-hover:scale-110 transition-transform duration-700">
+            <div className="group cursor-default perspective-card">
+              <div className="text-6xl md:text-7xl text-white font-extralight mb-4 group-hover:scale-110 transition-transform duration-700 gradient-text">
                 {counters.years}
               </div>
               <div className="text-[10px] tracking-[0.3em] uppercase text-white/40 font-light">
                 Years of Excellence
               </div>
             </div>
-            <div className="group">
-              <div className="text-6xl md:text-7xl text-white font-extralight mb-4 group-hover:scale-110 transition-transform duration-700">
+            <div className="group cursor-default perspective-card">
+              <div className="text-6xl md:text-7xl text-white font-extralight mb-4 group-hover:scale-110 transition-transform duration-700 gradient-text">
                 {counters.countries}+
               </div>
               <div className="text-[10px] tracking-[0.3em] uppercase text-white/40 font-light">
                 Countries Worldwide
               </div>
             </div>
-            <div className="group">
-              <div className="text-6xl md:text-7xl text-white font-extralight mb-4 group-hover:scale-110 transition-transform duration-700">
+            <div className="group cursor-default perspective-card">
+              <div className="text-6xl md:text-7xl text-white font-extralight mb-4 group-hover:scale-110 transition-transform duration-700 gradient-text">
                 2
               </div>
               <div className="text-[10px] tracking-[0.3em] uppercase text-white/40 font-light">
@@ -202,17 +196,17 @@ export default function HomePage() {
       </section>
 
       {/* Render ⇄ Reality Feature Section */}
-      <section className="bg-black py-32">
+      <section className="bg-black py-32 relative">
         <Container>
           <div className="max-w-6xl mx-auto">
-            {/* Section Header */}
-            <div className="text-center mb-16">
+            {/* Section Header with fade in */}
+            <div className="text-center mb-16 fade-in-up">
               <div className="inline-flex items-center gap-4 mb-6">
-                <div className="h-px w-16 bg-white/20"></div>
+                <div className="h-px w-16 bg-white/20 shimmer"></div>
                 <h2 className="text-5xl md:text-7xl text-white font-extralight tracking-tight">
                   Render <span className="text-white/30">⇄</span> Reality
                 </h2>
-                <div className="h-px w-16 bg-white/20"></div>
+                <div className="h-px w-16 bg-white/20 shimmer"></div>
               </div>
               <p className="text-white/50 text-sm tracking-wide max-w-2xl mx-auto">
                 Drag the slider to compare our architectural visualizations with the completed buildings.
@@ -220,16 +214,18 @@ export default function HomePage() {
               </p>
             </div>
 
-            {/* Interactive Comparison */}
-            <ComparisonSlider
-              renderImage={featuredProjects[1]?.cover.render}
-              realityImage={featuredProjects[1]?.cover.reality}
-              title={featuredProjects[1]?.title}
-              className="aspect-[16/9] rounded-sm"
-            />
+            {/* Interactive Comparison with scale in */}
+            <div className="scale-in">
+              <ComparisonSlider
+                renderImage={featuredProjects[1]?.cover.render}
+                realityImage={featuredProjects[1]?.cover.reality}
+                title={featuredProjects[1]?.title}
+                className="aspect-[16/9] rounded-sm"
+              />
+            </div>
 
-            {/* Stats */}
-            <div className="grid grid-cols-3 gap-8 mt-16 text-center">
+            {/* Stats with stagger */}
+            <div className="grid grid-cols-3 gap-8 mt-16 text-center stagger-children">
               <div className="group cursor-default">
                 <div className="text-4xl md:text-5xl text-white font-extralight mb-2 group-hover:text-green-400 transition-colors duration-500">98%</div>
                 <div className="text-[10px] tracking-[0.3em] text-white/40 uppercase">Accuracy</div>
@@ -247,10 +243,10 @@ export default function HomePage() {
         </Container>
       </section>
 
-      {/* Projects Grid - Render ⇄ Reality Cards */}
+      {/* Projects Grid with hover lift effects */}
       <section className="bg-white py-24">
         <Container>
-          <div className="mb-16">
+          <div className="mb-16 fade-in-up">
             <div className="inline-flex items-center gap-4 mb-6">
               <div className="h-px w-12 bg-black/20"></div>
               <h2 className="text-[10px] tracking-[0.3em] uppercase text-black/40 font-light">
@@ -270,29 +266,37 @@ export default function HomePage() {
               <Link
                 key={project.slug}
                 href={`/projects/${project.slug}`}
-                className="group block"
+                className="group block hover-lift"
+                style={{
+                  animation: `fade-in-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards`,
+                  animationDelay: `${index * 0.1}s`,
+                  opacity: 0
+                }}
               >
-                <div className="relative aspect-[4/3] overflow-hidden mb-6 bg-neutral-100">
+                <div className="relative aspect-[4/3] overflow-hidden mb-6 bg-neutral-100 perspective-card">
                   <img 
                     src={project.cover.reality}
                     alt={project.title}
-                    className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700"
+                    className="w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-700"
                   />
-                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-700" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+                  
+                  {/* Hover overlay with project info */}
+                  <div className="absolute inset-0 flex items-end p-6 opacity-0 group-hover:opacity-100 transition-opacity duration-700">
+                    <div className="text-white">
+                      <div className="text-xs tracking-wider uppercase mb-2">{project.location}</div>
+                      <div className="text-sm font-light">{project.year}</div>
+                    </div>
+                  </div>
                 </div>
                 
                 <div className="space-y-3">
                   <h3 className="text-2xl font-light tracking-tight text-black group-hover:text-black/60 transition-colors duration-500">
                     {project.title}
                   </h3>
-                  <div className="flex items-center gap-3 text-black/50 text-sm font-light">
-                    <span>{project.location}</span>
-                    <span>·</span>
-                    <span>{project.year}</span>
-                  </div>
                   <div className="flex flex-wrap gap-2">
                     {project.tags.slice(0, 2).map((tag, i) => (
-                      <span key={i} className="text-xs text-black/40 tracking-wider uppercase">
+                      <span key={i} className="text-xs text-black/40 tracking-wider uppercase px-3 py-1 border border-black/10 group-hover:border-black/30 transition-colors duration-500">
                         {tag}
                       </span>
                     ))}
@@ -302,10 +306,10 @@ export default function HomePage() {
             ))}
           </div>
           
-          <div className="text-center mt-16">
+          <div className="text-center mt-16 fade-in-up">
             <Link 
               href="/projects"
-              className="group inline-flex items-center gap-3 text-black/60 hover:text-black transition-colors duration-500"
+              className="group inline-flex items-center gap-3 text-black/60 hover:text-black transition-colors duration-500 hover-lift"
             >
               <span className="text-sm tracking-wider uppercase font-light">View All Projects</span>
               <svg className="w-4 h-4 transform group-hover:translate-x-2 transition-transform duration-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -316,25 +320,29 @@ export default function HomePage() {
         </Container>
       </section>
 
-      {/* Studio Introduction */}
-      <section className="bg-black py-32">
+      {/* Studio Introduction with slide in effects */}
+      <section className="bg-black py-32 relative overflow-hidden">
+        {/* Decorative elements */}
+        <div className="absolute top-20 right-20 w-64 h-64 bg-white/5 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-20 left-20 w-96 h-96 bg-white/5 rounded-full blur-3xl"></div>
+        
         <Container>
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
-            <div className="lg:col-span-5">
+          <div className="relative grid grid-cols-1 lg:grid-cols-12 gap-16">
+            <div className="lg:col-span-5 slide-in-left">
               <div className="inline-flex items-center gap-4 mb-8">
-                <div className="h-px w-12 bg-white/20"></div>
+                <div className="h-px w-12 bg-white/20 shimmer"></div>
                 <span className="text-[10px] tracking-[0.3em] text-white/40 uppercase font-light">
                   About MKDP
                 </span>
               </div>
-              <h2 className="text-5xl md:text-6xl text-white font-extralight tracking-tight leading-tight">
+              <h2 className="text-5xl md:text-6xl text-white font-extralight tracking-tight leading-tight gradient-text">
                 30 Years of
                 <br />
                 Design Excellence
               </h2>
             </div>
             
-            <div className="lg:col-span-7 space-y-6">
+            <div className="lg:col-span-7 space-y-6 slide-in-right">
               <p className="text-xl text-white/70 font-light leading-relaxed">
                 Founded in 1995 in Lebanon by Michel Keyrouz, MKDP Studio has grown into an international architecture and interior design practice with offices in Dubai and Beirut.
               </p>
@@ -344,7 +352,7 @@ export default function HomePage() {
               <div className="pt-8">
                 <Link 
                   href="/about"
-                  className="group inline-flex items-center gap-3 text-white/60 hover:text-white transition-colors duration-500"
+                  className="group inline-flex items-center gap-3 text-white/60 hover:text-white transition-colors duration-500 hover-lift"
                 >
                   <span className="text-[11px] tracking-[0.2em] uppercase font-light">Learn More</span>
                   <svg className="w-4 h-4 transform group-hover:translate-x-2 transition-transform duration-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -357,11 +365,11 @@ export default function HomePage() {
         </Container>
       </section>
 
-      {/* Services */}
+      {/* Services with perspective cards */}
       <section className="bg-white py-32">
         <Container>
           <div className="max-w-6xl mx-auto">
-            <div className="text-center mb-20">
+            <div className="text-center mb-20 fade-in-up">
               <div className="inline-flex items-center gap-4 mb-6">
                 <div className="h-px w-12 bg-black/20"></div>
                 <span className="text-[10px] tracking-[0.3em] uppercase text-black/40 font-light">
@@ -434,8 +442,16 @@ export default function HomePage() {
                   )
                 }
               ].map((service, index) => (
-                <div key={index} className="group">
-                  <div className="mb-6 text-black/40 group-hover:text-black transition-colors duration-500">
+                <div 
+                  key={index} 
+                  className="group perspective-card p-8 border border-black/5 hover:border-black/20 transition-all duration-700 hover-lift bg-white hover:shadow-2xl"
+                  style={{
+                    animation: `fade-in-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards`,
+                    animationDelay: `${index * 0.1}s`,
+                    opacity: 0
+                  }}
+                >
+                  <div className="mb-6 text-black/40 group-hover:text-black transition-colors duration-500 group-hover:scale-110 transform duration-700">
                     {service.icon}
                   </div>
                   <h3 className="text-2xl font-extralight tracking-tight mb-4 text-black">
@@ -451,32 +467,35 @@ export default function HomePage() {
         </Container>
       </section>
 
-      {/* CTA Section */}
-      <section className="bg-black py-32 border-t border-white/5">
+      {/* CTA Section with glass effect */}
+      <section className="relative bg-black py-32 border-t border-white/5 overflow-hidden">
+        <div className="absolute inset-0 glass opacity-30"></div>
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-white/5 rounded-full blur-3xl"></div>
+        
         <Container>
-          <div className="max-w-4xl mx-auto text-center">
-            <div className="inline-flex items-center gap-4 mb-8">
-              <div className="h-px w-16 bg-white/20"></div>
+          <div className="relative max-w-4xl mx-auto text-center">
+            <div className="inline-flex items-center gap-4 mb-8 fade-in-up">
+              <div className="h-px w-16 bg-white/20 shimmer"></div>
               <span className="text-[10px] tracking-[0.3em] text-white/40 uppercase font-light">
                 Let's Collaborate
               </span>
-              <div className="h-px w-16 bg-white/20"></div>
+              <div className="h-px w-16 bg-white/20 shimmer"></div>
             </div>
             
-            <h2 className="text-5xl md:text-7xl text-white font-extralight tracking-tight mb-8 leading-tight">
+            <h2 className="text-5xl md:text-7xl text-white font-extralight tracking-tight mb-8 leading-tight scale-in gradient-text">
               Ready to Start
               <br />
               Your Project?
             </h2>
             
-            <p className="text-white/60 text-lg mb-12 max-w-2xl mx-auto font-light leading-relaxed">
+            <p className="text-white/60 text-lg mb-12 max-w-2xl mx-auto font-light leading-relaxed fade-in-up">
               Whether you're planning a new development or reimagining an existing space, we're here to bring your vision to life.
             </p>
             
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-6 fade-in-up">
               <Link 
                 href="/contact"
-                className="group inline-flex items-center gap-4 px-12 py-5 bg-white text-black hover:bg-white/90 transition-all duration-500"
+                className="group inline-flex items-center gap-4 px-12 py-5 bg-white text-black hover:bg-white/90 transition-all duration-500 hover-lift pulse-glow"
               >
                 <span className="text-[10px] tracking-[0.25em] uppercase font-medium">
                   Get in Touch
@@ -488,7 +507,7 @@ export default function HomePage() {
 
               <Link 
                 href="/projects"
-                className="group inline-flex items-center gap-3 text-white/60 hover:text-white transition-colors duration-500"
+                className="group inline-flex items-center gap-3 text-white/60 hover:text-white transition-colors duration-500 hover-lift"
               >
                 <span className="text-[11px] tracking-[0.2em] uppercase font-light">
                   View All Projects
