@@ -5,13 +5,43 @@ import Link from 'next/link';
 import { allProjects } from '@/lib/projects-data';
 import { Container } from '@/components/ui/Container';
 import { ComparisonSlider } from '@/components/compare/ComparisonSlider';
-import { ProjectCardComparison } from '@/components/cards/ProjectCardComparison';
 
 export default function HomePage() {
   const [isLoaded, setIsLoaded] = useState(false);
+  const [counters, setCounters] = useState({ projects: 0, years: 0, countries: 0 });
   
   useEffect(() => {
     setIsLoaded(true);
+    
+    // Animate counters
+    const duration = 2000;
+    const steps = 60;
+    const interval = duration / steps;
+    
+    const targets = {
+      projects: allProjects.length,
+      years: new Date().getFullYear() - 1995,
+      countries: 15 // MENA + Europe regions
+    };
+    
+    let step = 0;
+    const timer = setInterval(() => {
+      step++;
+      const progress = step / steps;
+      
+      setCounters({
+        projects: Math.floor(targets.projects * progress),
+        years: Math.floor(targets.years * progress),
+        countries: Math.floor(targets.countries * progress)
+      });
+      
+      if (step >= steps) {
+        clearInterval(timer);
+        setCounters(targets);
+      }
+    }, interval);
+    
+    return () => clearInterval(timer);
   }, []);
 
   const featuredProjects = allProjects
@@ -89,15 +119,14 @@ export default function HomePage() {
                 }}
               >
                 <p className="text-white/80 text-base md:text-lg font-light leading-relaxed tracking-wide mb-8">
-                  Where architecture meets innovation. We create holistic spaces that seamlessly 
-                  integrate form, function, and cultural context across the MENA region and Europe.
+                  Design for a changing world. We make architecture, interiors, and urbanism that is innovative, social, sustainable, realistic, and remarkable.
                 </p>
                 <div className="flex flex-wrap items-center gap-6 text-white/60 text-xs font-light">
                   <span className="tracking-[0.2em] uppercase">Est. 1995</span>
                   <span className="text-white/30">·</span>
                   <span className="tracking-[0.2em] uppercase">Dubai × Beirut</span>
                   <span className="text-white/30">·</span>
-                  <span className="tracking-[0.2em] uppercase">30+ Years</span>
+                  <span className="tracking-[0.2em] uppercase">{counters.years}+ Years</span>
                 </div>
               </div>
 
@@ -132,6 +161,46 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Stats Section - Animated Counters */}
+      <section className="bg-black py-24 border-t border-white/5">
+        <Container>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-12 text-center">
+            <div className="group">
+              <div className="text-6xl md:text-7xl text-white font-extralight mb-4 group-hover:scale-110 transition-transform duration-700">
+                {counters.projects}+
+              </div>
+              <div className="text-[10px] tracking-[0.3em] uppercase text-white/40 font-light">
+                Projects Delivered
+              </div>
+            </div>
+            <div className="group">
+              <div className="text-6xl md:text-7xl text-white font-extralight mb-4 group-hover:scale-110 transition-transform duration-700">
+                {counters.years}
+              </div>
+              <div className="text-[10px] tracking-[0.3em] uppercase text-white/40 font-light">
+                Years of Excellence
+              </div>
+            </div>
+            <div className="group">
+              <div className="text-6xl md:text-7xl text-white font-extralight mb-4 group-hover:scale-110 transition-transform duration-700">
+                {counters.countries}+
+              </div>
+              <div className="text-[10px] tracking-[0.3em] uppercase text-white/40 font-light">
+                Countries Worldwide
+              </div>
+            </div>
+            <div className="group">
+              <div className="text-6xl md:text-7xl text-white font-extralight mb-4 group-hover:scale-110 transition-transform duration-700">
+                2
+              </div>
+              <div className="text-[10px] tracking-[0.3em] uppercase text-white/40 font-light">
+                International Offices
+              </div>
+            </div>
+          </div>
+        </Container>
+      </section>
+
       {/* Render ⇄ Reality Feature Section */}
       <section className="bg-black py-32">
         <Container>
@@ -161,16 +230,16 @@ export default function HomePage() {
 
             {/* Stats */}
             <div className="grid grid-cols-3 gap-8 mt-16 text-center">
-              <div>
-                <div className="text-4xl md:text-5xl text-white font-extralight mb-2">98%</div>
+              <div className="group cursor-default">
+                <div className="text-4xl md:text-5xl text-white font-extralight mb-2 group-hover:text-green-400 transition-colors duration-500">98%</div>
                 <div className="text-[10px] tracking-[0.3em] text-white/40 uppercase">Accuracy</div>
               </div>
-              <div>
-                <div className="text-4xl md:text-5xl text-white font-extralight mb-2">{allProjects.length}+</div>
+              <div className="group cursor-default">
+                <div className="text-4xl md:text-5xl text-white font-extralight mb-2 group-hover:text-blue-400 transition-colors duration-500">{allProjects.length}+</div>
                 <div className="text-[10px] tracking-[0.3em] text-white/40 uppercase">Projects</div>
               </div>
-              <div>
-                <div className="text-4xl md:text-5xl text-white font-extralight mb-2">100%</div>
+              <div className="group cursor-default">
+                <div className="text-4xl md:text-5xl text-white font-extralight mb-2 group-hover:text-green-400 transition-colors duration-500">100%</div>
                 <div className="text-[10px] tracking-[0.3em] text-white/40 uppercase">Built</div>
               </div>
             </div>
@@ -188,9 +257,12 @@ export default function HomePage() {
                 Featured Projects
               </h2>
             </div>
-            <h3 className="text-4xl md:text-6xl font-extralight tracking-tight text-black">
+            <h3 className="text-4xl md:text-6xl font-extralight tracking-tight text-black mb-6">
               Recent Work
             </h3>
+            <p className="text-lg text-black/60 font-light max-w-3xl">
+              From single-family homes to public buildings across the MENA region and Europe, we create spaces that transform lives.
+            </p>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
@@ -206,6 +278,7 @@ export default function HomePage() {
                     alt={project.title}
                     className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700"
                   />
+                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-700" />
                 </div>
                 
                 <div className="space-y-3">
@@ -227,6 +300,18 @@ export default function HomePage() {
                 </div>
               </Link>
             ))}
+          </div>
+          
+          <div className="text-center mt-16">
+            <Link 
+              href="/projects"
+              className="group inline-flex items-center gap-3 text-black/60 hover:text-black transition-colors duration-500"
+            >
+              <span className="text-sm tracking-wider uppercase font-light">View All Projects</span>
+              <svg className="w-4 h-4 transform group-hover:translate-x-2 transition-transform duration-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </Link>
           </div>
         </Container>
       </section>
@@ -284,9 +369,12 @@ export default function HomePage() {
                 </span>
                 <div className="h-px w-12 bg-black/20"></div>
               </div>
-              <h2 className="text-5xl md:text-7xl font-extralight tracking-tight text-black">
+              <h2 className="text-5xl md:text-7xl font-extralight tracking-tight text-black mb-6">
                 Our Services
               </h2>
+              <p className="text-lg text-black/60 font-light max-w-2xl mx-auto">
+                We revolutionize every aspect of human life through innovative design solutions.
+              </p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">

@@ -42,7 +42,7 @@ export default function ContactPage() {
     <div className="bg-white pt-24">
       {/* Hero */}
       <section className="py-24 md:py-32 border-b border-black/10">
-        <Container>
+      <Container>
           <div className="max-w-5xl">
             <div className="inline-flex items-center gap-4 mb-8">
               <div className="h-px w-16 bg-black/20"></div>
@@ -120,7 +120,7 @@ export default function ContactPage() {
                         +971 52 445 2386
                       </a>
                     </div>
-                    <div>
+                <div>
                       <p className="text-xs tracking-[0.2em] uppercase text-black/40 mb-3 font-light">
                         Lebanon
                       </p>
@@ -220,7 +220,7 @@ export default function ContactPage() {
                       www.mkdp.com
                     </a>
                   </div>
-                  <div>
+                <div>
                     <p className="text-xs tracking-[0.2em] uppercase text-black/40 mb-2">General Inquiries</p>
                     <a
                       href="mailto:info@mkdp.com"
@@ -254,10 +254,10 @@ export default function ContactPage() {
                     </p>
                   </div>
                 </div>
-              </div>
+                </div>
 
               {/* Social */}
-              <div>
+                <div>
                 <div className="inline-flex items-center gap-3 mb-6">
                   <div className="h-px w-8 bg-black/20"></div>
                   <h2 className="text-[10px] tracking-[0.3em] uppercase text-black/40 font-light">
@@ -276,9 +276,9 @@ export default function ContactPage() {
                   </a>
                 </div>
               </div>
-            </div>
+          </div>
 
-            {/* Contact Form */}
+          {/* Contact Form */}
             <div className="lg:col-span-7">
               <div className="bg-neutral-50 p-8 md:p-12 border border-black/10">
                 <h2 className="text-3xl font-extralight tracking-tight text-black mb-8">
@@ -286,59 +286,59 @@ export default function ContactPage() {
                 </h2>
                 
                 <form onSubmit={handleSubmit} className="space-y-8">
-                  <div>
+          <div>
                     <label htmlFor="name" className="block text-xs tracking-[0.2em] uppercase text-black/40 mb-3 font-light">
                       Name *
-                    </label>
-                    <input
-                      type="text"
-                      id="name"
-                      required
-                      value={formState.name}
-                      onChange={(e) => setFormState({ ...formState, name: e.target.value })}
+                  </label>
+                  <input
+                    type="text"
+                    id="name"
+                    required
+                    value={formState.name}
+                    onChange={(e) => setFormState({ ...formState, name: e.target.value })}
                       className="w-full px-4 py-3 bg-white border border-black/20 focus:border-black transition-colors duration-500 text-black placeholder:text-black/30 focus:outline-none"
                       placeholder="Your name"
-                    />
-                  </div>
+                  />
+                </div>
 
-                  <div>
+                <div>
                     <label htmlFor="email" className="block text-xs tracking-[0.2em] uppercase text-black/40 mb-3 font-light">
                       Email *
-                    </label>
-                    <input
-                      type="email"
-                      id="email"
-                      required
-                      value={formState.email}
-                      onChange={(e) => setFormState({ ...formState, email: e.target.value })}
+                  </label>
+                  <input
+                    type="email"
+                    id="email"
+                    required
+                    value={formState.email}
+                    onChange={(e) => setFormState({ ...formState, email: e.target.value })}
                       className="w-full px-4 py-3 bg-white border border-black/20 focus:border-black transition-colors duration-500 text-black placeholder:text-black/30 focus:outline-none"
                       placeholder="your@email.com"
-                    />
-                  </div>
+                  />
+                </div>
 
-                  <div>
+                <div>
                     <label htmlFor="message" className="block text-xs tracking-[0.2em] uppercase text-black/40 mb-3 font-light">
                       Message *
-                    </label>
-                    <textarea
-                      id="message"
-                      required
-                      rows={6}
-                      value={formState.message}
-                      onChange={(e) => setFormState({ ...formState, message: e.target.value })}
+                  </label>
+                  <textarea
+                    id="message"
+                    required
+                    rows={6}
+                    value={formState.message}
+                    onChange={(e) => setFormState({ ...formState, message: e.target.value })}
                       className="w-full px-4 py-3 bg-white border border-black/20 focus:border-black transition-colors duration-500 text-black placeholder:text-black/30 resize-none focus:outline-none"
                       placeholder="Tell us about your project..."
-                    />
-                  </div>
+                  />
+                </div>
 
                   <div className="flex items-center justify-between pt-4">
                     <button
-                      type="submit"
-                      disabled={status === 'loading'}
+                  type="submit"
+                  disabled={status === 'loading'}
                       className="group inline-flex items-center gap-4 px-10 py-4 bg-black text-white hover:bg-black/90 transition-all duration-500 disabled:opacity-50 disabled:cursor-not-allowed"
-                    >
+                >
                       <span className="text-xs tracking-[0.25em] uppercase font-light">
-                        {status === 'loading' ? 'Sending...' : 'Send Message'}
+                  {status === 'loading' ? 'Sending...' : 'Send Message'}
                       </span>
                       {status === 'idle' && (
                         <svg className="w-4 h-4 transform group-hover:translate-x-2 transition-transform duration-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -347,16 +347,16 @@ export default function ContactPage() {
                       )}
                     </button>
 
-                    {status === 'success' && (
+                {status === 'success' && (
                       <div className="flex items-center gap-2 text-green-600">
                         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                         </svg>
                         <span className="text-sm font-light">Message sent!</span>
                       </div>
-                    )}
+                )}
 
-                    {status === 'error' && (
+                {status === 'error' && (
                       <div className="flex items-center gap-2 text-red-600">
                         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -365,7 +365,7 @@ export default function ContactPage() {
                       </div>
                     )}
                   </div>
-                </form>
+              </form>
               </div>
             </div>
           </div>
@@ -387,7 +387,7 @@ export default function ContactPage() {
             </p>
           </div>
         </div>
-      </section>
+    </section>
     </div>
   );
 } 
