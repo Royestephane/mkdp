@@ -1,0 +1,35 @@
+{
+  "name": "arch-portfolio",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "npx contentlayer build && next build",
+    "start": "next start",
+    "lint": "next lint",
+    "preview": "next build && next start",
+    "setup": "node scripts/create-placeholders.js"
+  },
+  "dependencies": {
+    "next": "^15.0.3",
+    "react": "^19.0.0-rc.1",
+    "react-dom": "^19.0.0-rc.1",
+    "framer-motion": "^11.5.4",
+    "contentlayer2": "^0.4.6",
+    "next-contentlayer2": "^0.4.6",
+    "lucide-react": "^0.441.0",
+    "zod": "^3.23.8",
+    "lenis": "^1.1.9"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "typescript": "^5",
+    "eslint": "^8",
+    "eslint-config-next": "^15.0.3",
+    "tailwindcss": "^3.4.1",
+    "postcss": "^8",
+    "autoprefixer": "^10.0.1"
+  }
+} 

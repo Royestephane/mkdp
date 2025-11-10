@@ -1,0 +1,79 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --font-inter: 'Inter', sans-serif;
+  }
+
+  * {
+    @apply border-transparent;
+  }
+
+  html {
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    @apply bg-white text-black antialiased;
+    font-feature-settings: 'kern' 1, 'liga' 1;
+    letter-spacing: -0.015em;
+  }
+
+  /* Clean typography - Ultra refined */
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-extralight tracking-tight;
+    text-rendering: optimizeLegibility;
+    letter-spacing: -0.03em;
+  }
+
+  /* Smooth scroll */
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Disable animations with reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  /* Minimal focus styles */
+  *:focus-visible {
+    @apply outline-none;
+  }
+
+  /* Selection */
+  ::selection {
+    @apply bg-black/10;
+  }
+
+  /* Remove default image drag */
+  img {
+    user-select: none;
+    -webkit-user-drag: none;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  /* Modern grid */
+  .grid-auto-fill {
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
+  }
+} 
