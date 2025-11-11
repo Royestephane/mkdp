@@ -13,29 +13,16 @@ export default function ContactPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setStatus('loading');
-
-    try {
-      const response = await fetch('/api/contact', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formState),
-      });
-
-      if (response.ok) {
-        setStatus('success');
-        setFormState({ name: '', email: '', message: '' });
-        setTimeout(() => setStatus('idle'), 5000);
-      } else {
-        setStatus('error');
-        setTimeout(() => setStatus('idle'), 5000);
-      }
-    } catch (error) {
-      setStatus('error');
-      setTimeout(() => setStatus('idle'), 5000);
-    }
+    
+    // For static export, open email client with pre-filled information
+    const subject = encodeURIComponent('Contact from MKDP Website');
+    const body = encodeURIComponent(
+      `Name: ${formState.name}\nEmail: ${formState.email}\n\nMessage:\n${formState.message}`
+    );
+    window.location.href = `mailto:info@mkdp.com?subject=${subject}&body=${body}`;
+    
+    setStatus('success');
+    setTimeout(() => setStatus('idle'), 3000);
   };
 
   return (
@@ -52,13 +39,13 @@ export default function ContactPage() {
             </div>
             
             <h1 className="text-5xl md:text-7xl lg:text-8xl text-black font-extralight tracking-tight mb-12 leading-[0.9]">
-              Let's Create
+              Let&apos;s Create
               <br />
               Together
             </h1>
             
             <p className="text-xl md:text-2xl text-black/70 font-light leading-relaxed max-w-3xl">
-              If you're interested in exploring our work or considering potential collaborations, please don't hesitate to contact us. We are always eager to embrace new challenges and create together.
+              If you&apos;re interested in exploring our work or considering potential collaborations, please don&apos;t hesitate to contact us. We are always eager to embrace new challenges and create together.
             </p>
           </div>
         </Container>
@@ -334,17 +321,14 @@ export default function ContactPage() {
                   <div className="flex items-center justify-between pt-4">
                     <button
                   type="submit"
-                  disabled={status === 'loading'}
-                      className="group inline-flex items-center gap-4 px-10 py-4 bg-black text-white hover:bg-black/90 transition-all duration-500 disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="group inline-flex items-center gap-4 px-10 py-4 bg-black text-white hover:bg-black/90 transition-all duration-500"
                 >
                       <span className="text-xs tracking-[0.25em] uppercase font-light">
-                  {status === 'loading' ? 'Sending...' : 'Send Message'}
+                  Send Message
                       </span>
-                      {status === 'idle' && (
-                        <svg className="w-4 h-4 transform group-hover:translate-x-2 transition-transform duration-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                        </svg>
-                      )}
+                      <svg className="w-4 h-4 transform group-hover:translate-x-2 transition-transform duration-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                      </svg>
                     </button>
 
                 {status === 'success' && (
@@ -352,7 +336,7 @@ export default function ContactPage() {
                         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                         </svg>
-                        <span className="text-sm font-light">Message sent!</span>
+                        <span className="text-sm font-light">Opening email client...</span>
                       </div>
                 )}
 

@@ -1,18 +1,16 @@
 'use client';
 
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { allProjects } from '@/lib/projects-data';
 import { Container } from '@/components/ui/Container';
 import { ComparisonSlider } from '@/components/compare/ComparisonSlider';
 
 export default function HomePage() {
-  const [isLoaded, setIsLoaded] = useState(false);
   const [counters, setCounters] = useState({ projects: 0, years: 0, countries: 0 });
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   
   useEffect(() => {
-    setIsLoaded(true);
     
     // Animate counters
     const duration = 2000;
@@ -108,7 +106,7 @@ export default function HomePage() {
                   Designing
                 </span>
                 <span className="block text-6xl md:text-8xl lg:text-[10rem] text-white font-extralight tracking-[-0.02em] leading-[0.85]">
-                  Tomorrow's
+                  Tomorrow&apos;s
                 </span>
                 <span className="block text-6xl md:text-8xl lg:text-[10rem] font-bold tracking-[-0.02em] leading-[0.85] gradient-text neon-glow">
                   Environments
@@ -477,7 +475,7 @@ export default function HomePage() {
             <div className="inline-flex items-center gap-4 mb-8 fade-in-up">
               <div className="h-px w-16 bg-white/20 shimmer"></div>
               <span className="text-[10px] tracking-[0.3em] text-white/40 uppercase font-light">
-                Let's Collaborate
+                Let&apos;s Collaborate
               </span>
               <div className="h-px w-16 bg-white/20 shimmer"></div>
             </div>
@@ -489,7 +487,7 @@ export default function HomePage() {
             </h2>
             
             <p className="text-white/60 text-lg mb-12 max-w-2xl mx-auto font-light leading-relaxed fade-in-up">
-              Whether you're planning a new development or reimagining an existing space, we're here to bring your vision to life.
+              Whether you&apos;re planning a new development or reimagining an existing space, we&apos;re here to bring your vision to life.
             </p>
             
             <div className="flex flex-col sm:flex-row items-center justify-center gap-6 fade-in-up">

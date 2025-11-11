@@ -263,7 +263,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
       {/* Back to Projects */}
       <section className="py-12 bg-neutral-50 border-t border-black/10">
         <Container>
-          <a 
+          <Link 
             href="/projects" 
             className="inline-flex items-center gap-3 text-black/60 hover:text-black transition-colors duration-500 group"
           >
@@ -271,7 +271,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M7 16l-4-4m0 0l4-4m-4 4h18" />
             </svg>
             <span className="text-xs tracking-[0.2em] uppercase font-light">All Projects</span>
-          </a>
+          </Link>
         </Container>
       </section>
     </article>

@@ -1,5 +1,28 @@
-// Real MKDP Studio projects with actual images from /public/images
-export const allProjects = [
+// project-data.ts
+
+// Prefix for GitHub Pages project site (mkdp) in production,
+// empty in development so local dev paths stay the same.
+const BP = process.env.NODE_ENV === 'production' ? '/mkdp' : '';
+const withBP = (p: string) => (p?.startsWith('/') ? `${BP}${p}` : `${BP}/${p}`);
+
+type Project = {
+  title: string;
+  slug: string;
+  location: string;
+  year: number;
+  status: string;
+  program: string[];
+  size: string;
+  cover: { render: string; reality: string };
+  tags: string[];
+  body: { code: string };
+  gallery: string[];
+  facts: Record<string, unknown>;
+  url: string;
+};
+
+// Keep raw, base (leading-slash) paths here
+const RAW_PROJECTS: Project[] = [
   {
     title: "Harbor Cultural Center",
     slug: "harbor-cultural-center",
@@ -9,7 +32,8 @@ export const allProjects = [
     program: ["Cultural", "Public"],
     size: "12,400 m²",
     cover: {
-      render: "/images/p2_ren.jpg",
+      // ✅ ensure this matches the real file extension
+      render: "/images/p2_ren.jpeg",
       reality: "/images/p2_real.jpeg"
     },
     tags: ["Cultural", "Public Space", "Waterfront"],
@@ -45,7 +69,8 @@ export const allProjects = [
     program: ["Cultural", "Gallery"],
     size: "850 m²",
     cover: {
-      render: "/images/p3_rem.jpeg",
+      // ✅ 'ren' not 'rem' (adjust if your file is truly 'rem')
+      render: "/images/p3_ren.jpeg",
       reality: "/images/p3_real.jpeg"
     },
     tags: ["Cultural", "Gallery", "Stone"],
@@ -99,7 +124,7 @@ export const allProjects = [
     program: ["Office", "Co-Working"],
     size: "14,000 m²",
     cover: {
-      render: "/images/p3_rem.jpeg",
+      render: "/images/p3_ren.jpeg",
       reality: "/images/p3_real.jpeg"
     },
     tags: ["Office", "Technology", "Sustainable"],
@@ -108,4 +133,15 @@ export const allProjects = [
     facts: {},
     url: "/projects/tech-hub"
   }
-]; 
+];
+
+// Export with prefixed image paths only (URLs for pages remain as-is)
+export const allProjects: Project[] = RAW_PROJECTS.map(p => ({
+  ...p,
+  cover: {
+    render: withBP(p.cover.render),
+    reality: withBP(p.cover.reality),
+  },
+  // If you later add image strings inside gallery, auto-prefix them too:
+  gallery: (p.gallery || []).map(g => withBP(g)),
+}));

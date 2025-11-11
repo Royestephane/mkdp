@@ -46,8 +46,9 @@ export function Gallery({ items }: GalleryProps) {
 
   useState(() => {
     if (lightboxIndex !== null) {
-      window.addEventListener('keydown', handleKeyDown as any);
-      return () => window.removeEventListener('keydown', handleKeyDown as any);
+      const listener = (e: Event) => handleKeyDown(e as KeyboardEvent);
+      window.addEventListener('keydown', listener);
+      return () => window.removeEventListener('keydown', listener);
     }
   });
 

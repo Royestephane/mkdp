@@ -1,24 +1,20 @@
-import React from 'react';
+'use client';
+
+import React, { useMemo } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { allProjects } from '@/lib/projects-data';
 import { Container } from '@/components/ui/Container';
 import { searchProjects } from '@/lib/search';
 import { getUniqueTags } from '@/lib/utils';
 import { ProjectCardComparison } from '@/components/cards/ProjectCardComparison';
 
-interface ProjectsPageProps {
-  searchParams: Promise<{
-    query?: string;
-    tag?: string | string[];
-    status?: string;
-  }>;
-}
-
-export default async function ProjectsPage({ searchParams }: ProjectsPageProps) {
-  const params = await searchParams;
+export default function ProjectsPage() {
+  const searchParams = useSearchParams();
   
-  const query = params.query || '';
-  const tags = params.tag ? (Array.isArray(params.tag) ? params.tag : [params.tag]) : [];
-  const status = params.status || '';
+  const query = searchParams.get('query') || '';
+  const tag = searchParams.get('tag');
+  const tags = tag ? (Array.isArray(tag) ? tag : [tag]) : [];
+  const status = searchParams.get('status') || '';
 
   // Get all unique tags and statuses
   const availableTags = getUniqueTags(allProjects);
@@ -28,11 +24,11 @@ export default async function ProjectsPage({ searchParams }: ProjectsPageProps) 
   );
 
   // Filter projects based on search params
-  const filteredProjects = searchProjects(allProjects, {
+  const filteredProjects = useMemo(() => searchProjects(allProjects, {
     query,
     tags,
     status,
-  });
+  }), [query, tags, status]);
 
   return (
     <div className="bg-black pt-24">
@@ -145,9 +141,4 @@ export default async function ProjectsPage({ searchParams }: ProjectsPageProps) 
       </section>
     </div>
   );
-}
-
-export const metadata = {
-  title: 'Projects | MKDP Studio',
-  description: 'Explore our portfolio of architectural projects across the MENA region and Europe. From cultural centers to residential developments.',
-}; 
+} 

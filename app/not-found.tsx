@@ -24,11 +24,11 @@ export default function NotFound() {
             </div>
             
             <h1 className="text-4xl md:text-5xl text-white font-extralight tracking-tight mb-6">
-              This page doesn't exist
+              This page doesn&apos;t exist
             </h1>
             
             <p className="text-white/60 text-lg font-light leading-relaxed max-w-md mx-auto">
-              The page you're looking for has been moved, deleted, or never existed.
+              The page you&apos;re looking for has been moved, deleted, or never existed.
             </p>
           </div>
 

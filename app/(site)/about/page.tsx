@@ -174,7 +174,7 @@ export default function AboutPage() {
                 Michel Keyrouz
               </h3>
               <p className="text-white/70 leading-relaxed mb-8">
-                Founded MK Design in Lebanon in 1995, expanding to Dubai as MKDP Studio in 2019. Leading the studio's vision of pushing the boundaries of contemporary design across multiple disciplines.
+                Founded MK Design in Lebanon in 1995, expanding to Dubai as MKDP Studio in 2019. Leading the studio&apos;s vision of pushing the boundaries of contemporary design across multiple disciplines.
               </p>
               <div className="text-[10px] tracking-[0.3em] text-white/40 uppercase">
                 Est. 1995
@@ -195,10 +195,10 @@ export default function AboutPage() {
         <Container>
           <div className="max-w-4xl mx-auto text-center">
             <h2 className="text-4xl md:text-6xl font-extralight tracking-tight mb-8">
-              Let's Create Together
+              Let&apos;s Create Together
             </h2>
             <p className="text-black/60 mb-12 max-w-2xl mx-auto">
-              We're always interested in new projects and collaborations. Get in touch to discuss how we can bring your vision to life.
+              We&apos;re always interested in new projects and collaborations. Get in touch to discuss how we can bring your vision to life.
             </p>
             <a 
               href="/contact"
