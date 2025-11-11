@@ -75,7 +75,7 @@ export default async function ProjectsPage({ searchParams }: ProjectsPageProps) 
 
       {/* Render ⇄ Reality Grid */}
       <section className="py-16 bg-white">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 px-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-4 px-0 md:px-8">
           {filteredProjects.length > 0 ? (
             filteredProjects.map((project, index) => (
               <ProjectCardComparison

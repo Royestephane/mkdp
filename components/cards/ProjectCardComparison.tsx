@@ -27,7 +27,7 @@ export function ProjectCardComparison({
   return (
     <Link
       href={`/projects/${slug}`}
-      className="group relative aspect-[4/5] overflow-hidden block"
+      className="group relative aspect-square overflow-hidden block"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >

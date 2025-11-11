@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import Lenis from 'lenis';
@@ -16,6 +16,7 @@ export default function SiteLayout({
 }) {
   const pathname = usePathname();
   const prefersReducedMotion = useReducedMotion();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   // Initialize Lenis smooth scroll
   useEffect(() => {
@@ -85,15 +86,43 @@ export default function SiteLayout({
             </ul>
 
             {/* Minimal menu indicator */}
-            <button className="md:hidden text-white">
+            <button 
+              className="md:hidden text-white"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              aria-label="Toggle menu"
+            >
               <div className="space-y-1">
-                <div className="w-5 h-px bg-white"></div>
-                <div className="w-5 h-px bg-white"></div>
+                <div className={cn("w-5 h-px bg-white transition-all duration-300", mobileMenuOpen && "rotate-45 translate-y-[5px]")}></div>
+                <div className={cn("w-5 h-px bg-white transition-all duration-300", mobileMenuOpen && "-rotate-45 -translate-y-[3px]")}></div>
               </div>
             </button>
           </nav>
         </Container>
       </header>
+
+      {/* Mobile Menu */}
+      <div className={cn(
+        "fixed inset-0 z-40 bg-black/95 backdrop-blur-xl md:hidden transition-all duration-500",
+        mobileMenuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+      )}>
+        <div className="flex items-center justify-center h-full">
+          <nav className="flex flex-col items-center gap-8">
+            {navItems.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                onClick={() => setMobileMenuOpen(false)}
+                className={cn(
+                  'text-2xl tracking-[0.2em] font-light uppercase transition-opacity duration-500',
+                  pathname === item.href ? 'text-white opacity-100' : 'text-white opacity-40'
+                )}
+              >
+                {item.label}
+              </Link>
+            ))}
+          </nav>
+        </div>
+      </div>
 
       <main>{children}</main>
 

@@ -261,7 +261,7 @@ export default function HomePage() {
             </p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8 lg:gap-12">
             {featuredProjects.slice(1).map((project, index) => (
               <Link
                 key={project.slug}
@@ -273,7 +273,7 @@ export default function HomePage() {
                   opacity: 0
                 }}
               >
-                <div className="relative aspect-[4/3] overflow-hidden mb-6 bg-neutral-100 perspective-card">
+                <div className="relative aspect-square overflow-hidden mb-6 bg-neutral-100 perspective-card">
                   <img 
                     src={project.cover.reality}
                     alt={project.title}
