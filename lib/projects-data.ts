@@ -1,8 +1,7 @@
 // project-data.ts
 
-// Prefix for GitHub Pages project site (mkdp) in production,
-// empty in development so local dev paths stay the same.
-const BP = process.env.NODE_ENV === 'production' ? '/mkdp' : '';
+// No base path prefix needed for Vercel deployment
+const BP = '';
 const withBP = (p: string) => (p?.startsWith('/') ? `${BP}${p}` : `${BP}/${p}`);
 
 type Project = {
