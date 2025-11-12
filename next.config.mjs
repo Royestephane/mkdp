@@ -1,6 +1,4 @@
 // next.config.mjs
-const isProd = process.env.NODE_ENV === 'production'
-
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
@@ -8,11 +6,7 @@ const nextConfig = {
   // 👇 This makes Next output a static site to ./out
   output: 'export',
 
-  // 👇 Required for GitHub Pages project sites
-  basePath: isProd ? '/mkdp' : '',
-  assetPrefix: isProd ? '/mkdp/' : '',
-
-  // 👇 next/image won't run an image optimization server on GH Pages
+  // 👇 next/image optimization settings for static export
   images: {
     unoptimized: true,
     formats: ['image/avif', 'image/webp'],
